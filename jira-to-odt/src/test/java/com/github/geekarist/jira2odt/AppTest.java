@@ -17,5 +17,18 @@ public class AppTest {
 		// THEN
 		Assert.assertEquals("TCP keepalive for leader election connections", issue.getTitle());
 		Assert.assertEquals("ZOOKEEPER-1748", issue.getId());
+		Assert.assertEquals("None", issue.getLabels());
+	}
+	
+	@Test
+	public void shouldLoginAndGetIssueAttributes() {
+		// GIVEN
+		String url = "http://jira.sfrdev.fr/browse/SRR-113";
+		// WHEN
+		JiraIssue issue = app.get(url);
+		// THEN
+		Assert.assertEquals("[SRR]CHANGE_OFFRE] Eligiblité commerciale", issue.getTitle());
+		Assert.assertEquals("SRR-113", issue.getId());
+		Assert.assertEquals("MigrationChangeSRR OnBoard", issue.getLabels());
 	}
 }

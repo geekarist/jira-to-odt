@@ -4,6 +4,7 @@ public class JiraIssue {
 
 	private String title;
 	private String id;
+	private String labels;
 
 	public String getTitle() {
 		return title;
@@ -20,6 +21,15 @@ public class JiraIssue {
 
 	public JiraIssue setId(String text) {
 		this.id = text;
+		return this;
+	}
+
+	public String getLabels() {
+		return labels;
+	}
+
+	public JiraIssue setLabels(String text) {
+		this.labels = text;
 		return this;
 	}
 
