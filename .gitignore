@@ -1,1 +1,7 @@
 work-eclipse
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
