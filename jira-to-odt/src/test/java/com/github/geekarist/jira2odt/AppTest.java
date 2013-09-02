@@ -17,7 +17,7 @@ public class AppTest {
 		// THEN
 		Assert.assertEquals("TCP keepalive for leader election connections", issue.getTitle());
 		Assert.assertEquals("ZOOKEEPER-1748", issue.getId());
-		Assert.assertEquals("None", issue.getLabels());
+		Assert.assertEquals("", issue.getLabels());
 	}
 	
 	@Test
@@ -29,6 +29,6 @@ public class AppTest {
 		// THEN
 		Assert.assertEquals("[SRR]CHANGE_OFFRE] Eligiblité commerciale", issue.getTitle());
 		Assert.assertEquals("SRR-113", issue.getId());
-		Assert.assertEquals("MigrationChangeSRR OnBoard", issue.getLabels());
+		Assert.assertEquals("MigrationChangeSRR", issue.getLabels());
 	}
 }
