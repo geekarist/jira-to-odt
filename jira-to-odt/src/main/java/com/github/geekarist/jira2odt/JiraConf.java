@@ -2,7 +2,8 @@ package com.github.geekarist.jira2odt;
 
 public interface JiraConf {
 
-	String PASSWORD = "xx";
-	String LOGIN = "yy";
+	final String PASSWORD = "xx";
+	final String LOGIN = "yy";
+	final String URL = "zz";
 
 }

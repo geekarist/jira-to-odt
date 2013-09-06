@@ -15,7 +15,7 @@ public class App {
 	public JiraIssue get(String url) {
 		try {
 			// Login
-			Map<String, String> cookies = Jsoup.connect("http://jira.sfrdev.fr/login.jsp")
+			Map<String, String> cookies = Jsoup.connect(JiraConf.URL)
 					.data("os_username", JiraConf.LOGIN, "os_password", JiraConf.PASSWORD)
 					.method(Method.POST).execute().cookies();
 			
