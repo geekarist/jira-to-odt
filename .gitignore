@@ -5,3 +5,4 @@ work-eclipse
 *.jar
 *.war
 *.ear
+jira-to-odt/src/main/java/com/github/geekarist/jira2odt/JiraConf.java
