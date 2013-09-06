@@ -1,11 +1,14 @@
 package com.github.geekarist.jira2odt;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.Connection.Method;
 import org.jsoup.nodes.Document;
+import org.odftoolkit.odfdom.doc.OdfTextDocument;
 
 public class App {
 	public static void main(String[] args) {
@@ -21,15 +24,38 @@ public class App {
 			
 			// Get issue attributes
 			Document document = Jsoup.connect(url).cookies(cookies).get();
-			System.out.println(document.html());
 			return new JiraIssue()
 				.setTitle(document.select("#summary-val").text())
 				.setId(document.select("#key-val").text())
 				.setLabels(document.select("#wrap-labels .labels .lozenge").text().replace(" OnBoard", ""));
 		} catch (IOException e) {
-			System.err.println(String.format("IO error while getting [%s]", url));
-			e.printStackTrace(System.err);
+			ioError(url, e);
 			return null;
 		}
+	}
+
+	private void ioError(String url, IOException e) {
+		System.err.println(String.format("IO error while getting [%s]", url));
+		e.printStackTrace(System.err);
+	}
+
+	public void createOdt(String jiraUrl) {
+		try {
+			JiraIssue jiraIssue = get(jiraUrl);
+			OdfTextDocument odt = OdfTextDocument.newTextDocument();
+			odt.newParagraph(jiraIssue.getId());
+			odt.newParagraph(jiraIssue.getTitle());
+			odt.newParagraph(jiraIssue.getLabels());
+			odt.save(jiraIssue.getId() + ".odt");
+		} catch (IOException e) {
+			ioError(jiraUrl, e);
+		} catch (Exception e) {
+			unknownError(jiraUrl, e);
+		}
+	}
+
+	private void unknownError(String jiraUrl, Exception e) {
+		System.err.println(String.format("Unknown error while converting [%s] to odt", jiraUrl));
+		e.printStackTrace(System.err);
 	}
 }

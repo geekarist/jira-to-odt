@@ -1,8 +1,14 @@
 package com.github.geekarist.jira2odt;
 
+import java.io.File;
+
+import org.custommonkey.xmlunit.XMLAssert;
+import org.custommonkey.xmlunit.XMLTestCase;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Assert;
 import org.junit.Test;
-
+import org.odftoolkit.odfdom.doc.OdfTextDocument;
+import org.odftoolkit.odfdom.dom.OdfContentDom;
 
 public class AppTest {
 
@@ -19,7 +25,7 @@ public class AppTest {
 		Assert.assertEquals("ZOOKEEPER-1748", issue.getId());
 		Assert.assertEquals("", issue.getLabels());
 	}
-	
+
 	@Test
 	public void shouldLoginAndGetIssueAttributes() {
 		// GIVEN
@@ -31,4 +37,20 @@ public class AppTest {
 		Assert.assertEquals("SRR-113", issue.getId());
 		Assert.assertEquals("MigrationChangeSRR", issue.getLabels());
 	}
+
+	@Test
+	public void shouldCreateOdtFromJira() throws Exception {
+		// GIVEN
+		String jiraUrl = "http://jira.sfrdev.fr/browse/SRR-113";
+		// WHEN
+		app.createOdt(jiraUrl);
+		// THEN
+		Assert.assertTrue(new File("SRR-113.odt").exists());
+		OdfContentDom contentDom = OdfTextDocument.loadDocument("SRR-113.odt").getContentDom();
+		System.out.println(contentDom.toString());
+		XMLAssert.assertXpathEvaluatesTo(
+				String.format("%s%s%s", "SRR-113", "[SRR]CHANGE_OFFRE] Eligiblité commerciale", "MigrationChangeSRR"),
+				"//*", contentDom);
+	}
+
 }
