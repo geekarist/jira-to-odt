@@ -1,12 +1,10 @@
 package com.github.geekarist.jira2odt;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Map;
 
-import org.jsoup.Jsoup;
 import org.jsoup.Connection.Method;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.odftoolkit.odfdom.doc.OdfTextDocument;
 
@@ -43,7 +41,7 @@ public class App {
 		try {
 			JiraIssue jiraIssue = get(jiraUrl);
 			OdfTextDocument odt = OdfTextDocument.newTextDocument();
-			odt.newParagraph(jiraIssue.getId());
+			odt.addText(jiraIssue.getId());
 			odt.newParagraph(jiraIssue.getTitle());
 			odt.newParagraph(jiraIssue.getLabels());
 			odt.save(jiraIssue.getId() + ".odt");
