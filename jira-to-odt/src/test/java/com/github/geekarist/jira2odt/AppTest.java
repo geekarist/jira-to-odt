@@ -2,10 +2,18 @@ package com.github.geekarist.jira2odt;
 
 import java.io.File;
 
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.odftoolkit.odfdom.doc.OdfTextDocument;
 import org.odftoolkit.odfdom.dom.OdfContentDom;
+import org.odftoolkit.odfdom.dom.element.text.TextPElement;
+import org.odftoolkit.odfdom.pkg.OdfElement;
+import org.odftoolkit.simple.common.field.AuthorField;
+import org.odftoolkit.simple.common.field.Fields;
 import org.w3c.dom.NodeList;
 
 public class AppTest {
@@ -37,19 +45,25 @@ public class AppTest {
 	}
 
 	@Test
-	public void shouldCreateOdtFromJira() throws Exception {
+	public void shouldCreateOdtFromJiraUsingTemplate() throws Exception {
 		// GIVEN
 		String jiraUrl = "http://jira.sfrdev.fr/browse/SRR-113";
 		// WHEN
 		app.createOdt(jiraUrl);
 		// THEN
-		Assert.assertTrue(new File("SRR-113.odt").exists());
-		OdfContentDom contentDom = OdfTextDocument.loadDocument("SRR-113.odt").getContentDom();
-		NodeList elementsByTagName = contentDom.getElementsByTagName("text:p");
-		Assert.assertEquals(3, elementsByTagName.getLength());
-		Assert.assertEquals("SRR-113", elementsByTagName.item(0).getTextContent());
-		Assert.assertEquals("[SRR]CHANGE_OFFRE] Eligiblité commerciale", elementsByTagName.item(1).getTextContent());
-		Assert.assertEquals("MigrationChangeSRR", elementsByTagName.item(2).getTextContent());
+		Assert.assertTrue(new File("target/SRR-113.odt").exists());
+		OdfContentDom contentDom = OdfTextDocument.loadDocument("target/SRR-113.odt").getContentDom();
+		Assert.assertEquals("SRR-113", fieldValue(contentDom, "id"));
+		Assert.assertEquals("3", fieldValue(contentDom, "size"));
+		Assert.assertEquals("[SRR]CHANGE_OFFRE] Eligiblité commerciale", fieldValue(contentDom, "description"));
+		Assert.assertEquals("MigrationChangeSRR", fieldValue(contentDom, "project"));
+	}
+
+	private String fieldValue(OdfContentDom contentDom, String name) throws XPathExpressionException {
+		XPath xPath = contentDom.getXPath();
+		String expression = String.format("//text:user-field-decl[@text:name='%s']", name);
+		TextPElement element = (TextPElement) xPath.evaluate(expression, contentDom, XPathConstants.NODE);
+		return element.getAttribute("office:string-value");
 	}
 
 }
