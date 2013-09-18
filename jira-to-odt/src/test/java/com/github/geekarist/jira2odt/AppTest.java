@@ -11,12 +11,10 @@ import org.junit.Test;
 import org.odftoolkit.odfdom.doc.OdfTextDocument;
 import org.odftoolkit.odfdom.dom.OdfContentDom;
 import org.odftoolkit.odfdom.dom.element.text.TextPElement;
-import org.odftoolkit.odfdom.pkg.OdfElement;
-import org.odftoolkit.simple.common.field.AuthorField;
-import org.odftoolkit.simple.common.field.Fields;
-import org.w3c.dom.NodeList;
 
 public class AppTest {
+	
+	// TODO Use https://github.com/cucumber/cucumber-jvm
 
 	private App app = new App();
 
